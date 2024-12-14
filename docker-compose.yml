@@ -1,0 +1,29 @@
+version: '3'
+services:
+  php:
+    build:
+      context: docker
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - "${CATALOG:-.}/:/app"
+    ports:
+      - "${HTTP_PORT:-8000}:80"
+    depends_on:
+      - app
+    container_name: php
+
+  app:
+    image: 'postgres:alpine'
+    container_name: database
+    environment:
+      POSTGRES_PASSWORD: main
+      POSTGRES_USER: main
+      POSTGRES_DB: main
+    ports:
+      - '5432:5432'
+
+volumes:
+  db-data:
+  app_data:
+

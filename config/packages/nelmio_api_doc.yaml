@@ -1,0 +1,63 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: SK-HOST
+            description: This is an awesome app!
+            version: 1.0.0
+        paths:
+            ### Register ###
+            /api/login:
+                post:
+                    tags: [ Authorization ]
+                    summary: Login
+                    operationId: user-login
+                    requestBody:
+                        description: Users email and plain password
+                        required: true
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: '#/components/schemas/PostApiLoginCheckRequest'
+                    responses:
+                        '200':
+                            description: Success response return token value and refresh token value
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/PostApiLoginCheckResponse200'
+
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+            schemas:
+                PostApiLoginCheckRequest:
+                    required:
+                        - name
+                    properties:
+                        username:
+                            type: string
+                            example: m@m.pl
+                        password:
+                            type: string
+                            example: "123456"
+                PostApiLoginCheckResponse200:
+                    required:
+                        - name
+                    properties:
+                        token:
+                            type: string
+                            example: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE
+                        refresh_token:
+                            type: string
+                            example: 96972990b9e6d91ad5e1ad89527e84bf31367143b9dc1abb9d
+
+        security:
+            - Bearer: [ ]
+
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+
